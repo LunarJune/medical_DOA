@@ -1,12 +1,18 @@
 package xly.LHS;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import xly.doip.*;
+import xly.doip.client.DigitalObject;
+import xly.doip.client.Element;
 import xly.doip.server.*;
 
 import java.net.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 
 public class LocalServer implements DoipProcessor {
@@ -17,6 +23,7 @@ public class LocalServer implements DoipProcessor {
     @Override
     public void process(DoipServerRequest req, DoipServerResponse resp) throws IOException {
         System.out.println("hhhh");
+        resp.commit();
         for (InDoipSegment segment : req.getInput()) {
             if (segment.isJson()) {
                 var json = segment.getJson();
@@ -33,10 +40,19 @@ public class LocalServer implements DoipProcessor {
                 fos.close();// 保存数据
             }
         }
-        resp.commit();
+        DigitalObject dobj = new DigitalObject();
+        Element el = new Element();
+        el.id = "from_server";
+        el.in = Files.newInputStream(Paths.get("DO-IRP.pdf"));
+        dobj.elements = new ArrayList<>();
+        dobj.elements.add(el);
         Gson gson = new Gson();
-        Test test = new Test();
-        resp.getOutput().writeJson(gson.toJson(test));
+        resp.getOutput().writeJson(gson.toJson(dobj));
+
+        JsonObject elementSegmentJson = new JsonObject();
+        elementSegmentJson.addProperty("id", el.id);
+        resp.getOutput().writeJson(elementSegmentJson);
+        resp.getOutput().writeBytes(el.in);
 //        var out = resp.getOutput().getBytesOutputStream();
 //        out.write("{\"a\":\"b\"}".getBytes(StandardCharsets.UTF_8));
 //        out.flush();
