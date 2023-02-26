@@ -1,6 +1,7 @@
 package xly.doip.client.transport;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -78,13 +79,14 @@ public class TransportDoipClient implements AutoCloseable {
         int readTimeoutMs = options.readTimeoutMs == null ? DEFAULT_TIMEOUT_MS : options.connectTimeoutMs;
         if (readTimeoutMs < 0) readTimeoutMs = DEFAULT_TIMEOUT_MS;
         X509TrustManager serverTrustManager = null;
-        if (options.serverId != null) {
-            serverTrustManager = new TrustManagerForSpecifiedServerIdAndKeys(options.serverId, options.trustedServerPublicKeys);
-        }
+        /*TODO*/
+//        if (options.serverId != null) {
+//            serverTrustManager = new TrustManagerForSpecifiedServerIdAndKeys(options.serverId, options.trustedServerPublicKeys);
+//        }
         X509KeyManager clientKeyManager = null;
-        if (options.clientId != null) {
-            clientKeyManager = new AutoSelfSignedKeyManager(options.clientId, options.clientPublicKey, options.clientPrivateKey);
-        }
+//        if (options.clientId != null) {
+//            clientKeyManager = new AutoSelfSignedKeyManager(options.clientId, options.clientPublicKey, options.clientPrivateKey);
+//        }
         return connect(address, port, serverTrustManager, clientKeyManager, connectTimeoutMs, readTimeoutMs);
     }
 
@@ -104,10 +106,12 @@ public class TransportDoipClient implements AutoCloseable {
     @SuppressWarnings("resource")
     public DoipConnection connect(InetAddress address, int port, X509TrustManager serverTrustManager, X509KeyManager clientKeyManager, int connectTimeoutMs, int readTimeoutMs) throws IOException {
         if (closed) throw new IOException("closed");
-        SSLContext sslContext = getSSLContext(serverTrustManager, clientKeyManager);
-        SocketFactory socketFactory = sslContext.getSocketFactory();
-        Socket socket = socketFactory.createSocket();
-        TlsProtocolAndCipherSuiteConfigurationUtil.configureEnabledProtocolsAndCipherSuites(socket);
+        /*TODO*/
+//        SSLContext sslContext = getSSLContext(serverTrustManager, clientKeyManager);
+//        SocketFactory socketFactory = sslContext.getSocketFactory();
+//        Socket socket = socketFactory.createSocket();
+//        TlsProtocolAndCipherSuiteConfigurationUtil.configureEnabledProtocolsAndCipherSuites(socket);
+        Socket socket = new Socket();
         socket.setSoTimeout(readTimeoutMs);
         socket.connect(new InetSocketAddress(address, port), connectTimeoutMs);
         long count = counter.getAndIncrement();

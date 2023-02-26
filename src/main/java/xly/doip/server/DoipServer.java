@@ -131,15 +131,17 @@ public class DoipServer {
     }
 
     private void initServerSocket() throws KeyManagementException, IOException, UnknownHostException {
-        String ephemeralDHKeySize = System.getProperty("jdk.tls.ephemeralDHKeySize");
-        if (ephemeralDHKeySize == null) {
-            System.setProperty("jdk.tls.ephemeralDHKeySize", "2048");
-        }
-        SSLContext sslContext = getServerSSLContext(config.tlsConfig);
-        SSLServerSocketFactory serverSocketFactory = sslContext.getServerSocketFactory();
-        serverSocket = serverSocketFactory.createServerSocket();
-        ((SSLServerSocket) serverSocket).setWantClientAuth(true);
-        TlsProtocolAndCipherSuiteConfigurationUtil.configureEnabledProtocolsAndCipherSuites(serverSocket);
+        /*TODO*/
+//        String ephemeralDHKeySize = System.getProperty("jdk.tls.ephemeralDHKeySize");
+//        if (ephemeralDHKeySize == null) {
+//            System.setProperty("jdk.tls.ephemeralDHKeySize", "2048");
+//        }
+//        SSLContext sslContext = getServerSSLContext(config.tlsConfig);
+//        SSLServerSocketFactory serverSocketFactory = sslContext.getServerSocketFactory();
+//        serverSocket = serverSocketFactory.createServerSocket();
+//        ((SSLServerSocket) serverSocket).setWantClientAuth(true);
+//        TlsProtocolAndCipherSuiteConfigurationUtil.configureEnabledProtocolsAndCipherSuites(serverSocket);
+        serverSocket = new ServerSocket();
         serverSocket.bind(new InetSocketAddress(InetAddress.getByName(config.listenAddress), config.port), config.backlog);
         this.port = serverSocket.getLocalPort();
     }
@@ -207,6 +209,12 @@ public class DoipServer {
     @SuppressWarnings("resource")
     private void handleMessagesThrowing(Socket socket) throws IOException {
         PushbackInputStream in = new PushbackInputStream(new BufferedInputStream(socket.getInputStream()));
+        /*TODO*/
+//        int n;
+//        // 读取文件，并将内容转换为字符输出
+//        while ((n = in.read()) != -1){
+//            System.out.print((char)n);
+//        }
         int ch;
         while ((ch = in.read()) > -1) {
             in.unread(ch);
@@ -215,13 +223,15 @@ public class DoipServer {
             String requestId = null;
             try {
                 // get cert for each message in order to support TLS renegotiation to change client id?
-                X509Certificate[] clientCertChain = getClientCertChain(socket);
-                String clientCertId = X509IdParser.parseIdentityHandle(clientCertChain);
-                PublicKey clientCertPublicKey = null;
-                if (clientCertChain != null && clientCertChain.length > 0) {
-                    clientCertPublicKey = clientCertChain[0].getPublicKey();
-                }
-                DoipServerRequestImpl req = new DoipServerRequestImpl(inDoipMessage, clientCertId, clientCertPublicKey, clientCertChain);
+//                X509Certificate[] clientCertChain = getClientCertChain(socket);
+//                String clientCertId = X509IdParser.parseIdentityHandle(clientCertChain);
+//                PublicKey clientCertPublicKey = null;
+//                if (clientCertChain != null && clientCertChain.length > 0) {
+//                    clientCertPublicKey = clientCertChain[0].getPublicKey();
+//                }
+//                DoipServerRequestImpl req = new DoipServerRequestImpl(inDoipMessage, clientCertId, clientCertPublicKey, clientCertChain);
+                /*TODO*/
+                DoipServerRequestImpl req = new DoipServerRequestImpl(inDoipMessage, "", null, null);
                 requestId = req.getRequestId();
                 DoipServerResponseImpl resp = new DoipServerResponseImpl(requestId, outDoipMessage);
                 try {
