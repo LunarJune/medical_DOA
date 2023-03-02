@@ -56,7 +56,7 @@ import xly.doip.util.tls.X509IdParser;
  * determines request-handling logic.  The DoipProcessor can be automatically instantiated and managed
  * if not provided to the server on construction in which case the DoipServerConfig must specify the
  * class name of the DoipProcessor.
- *
+ * <p>
  * The DOIP server will set up a listener according to the DoipServerConfig, and when requests
  * come in, will pass them to the DoipProcessor to populate the response.
  */
@@ -96,7 +96,7 @@ public class DoipServer {
      * The DoipServer does not call the {@link DoipProcessor#init(JsonObject)} or
      * {@link DoipProcessor#shutdown()} methods.
      *
-     * @param config the server configuration object (used for listener properties only)
+     * @param config        the server configuration object (used for listener properties only)
      * @param doipProcessor a DoipProcessor instance used to handle requests
      */
     public DoipServer(DoipServerConfig config, DoipProcessor doipProcessor) {
@@ -142,7 +142,9 @@ public class DoipServer {
 //        ((SSLServerSocket) serverSocket).setWantClientAuth(true);
 //        TlsProtocolAndCipherSuiteConfigurationUtil.configureEnabledProtocolsAndCipherSuites(serverSocket);
         serverSocket = new ServerSocket();
-        serverSocket.bind(new InetSocketAddress(InetAddress.getByName(config.listenAddress), config.port), config.backlog);
+        if (config.listenAddress == null) serverSocket.bind(new InetSocketAddress(config.port), config.backlog);
+        else
+            serverSocket.bind(new InetSocketAddress(InetAddress.getByName(config.listenAddress), config.port), config.backlog);
         this.port = serverSocket.getLocalPort();
     }
 
@@ -163,9 +165,9 @@ public class DoipServer {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            KeyManager[] kms = new KeyManager[] { km };
+            KeyManager[] kms = new KeyManager[]{km};
             // trust all client certificates; pass the information about the client on to the processor to decide
-            TrustManager[] tms = new TrustManager[] { new AllTrustingTrustManager() };
+            TrustManager[] tms = new TrustManager[]{new AllTrustingTrustManager()};
             sslContext.init(kms, tms, null);
             return sslContext;
         } catch (NoSuchAlgorithmException e) {
@@ -264,12 +266,12 @@ public class DoipServer {
     private X509Certificate[] getClientCertChain(Socket socket) {
         if (!(socket instanceof SSLSocket)) return null;
         try {
-            Certificate[] certs = ((SSLSocket)socket).getSession().getPeerCertificates();
+            Certificate[] certs = ((SSLSocket) socket).getSession().getPeerCertificates();
             if (certs == null || certs.length == 0) return null;
             X509Certificate[] res = new X509Certificate[certs.length];
             for (int i = 0; i < certs.length; i++) {
                 if (!(certs[i] instanceof X509Certificate)) return null;
-                res[i] = (X509Certificate)certs[i];
+                res[i] = (X509Certificate) certs[i];
             }
             return res;
         } catch (SSLPeerUnverifiedException e) {

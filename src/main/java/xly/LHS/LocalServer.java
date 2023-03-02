@@ -83,7 +83,7 @@ public class LocalServer implements DoipProcessor {
 
     public static void main(String[] args) throws Exception {
         DoipServerConfig config = new DoipServerConfig();
-        config.listenAddress = "127.0.0.1";
+        config.listenAddress = null;
         config.port = 8888;
         config.processorClass = LocalServer.class.getName();
         System.out.println(LocalServer.class.getName());
