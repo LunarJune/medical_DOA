@@ -6,6 +6,7 @@ import xly.doip.*;
 import xly.doip.client.DigitalObject;
 import xly.doip.client.Element;
 import xly.doip.server.*;
+import xly.Util;
 
 import java.net.*;
 import java.io.*;
@@ -29,21 +30,24 @@ public class LocalServer implements DoipProcessor {
                 var json = segment.getJson();
                 System.out.println(json);
             }else {
-                System.out.println("stream");
+                System.out.print("stream ");
                 InputStream in = segment.getInputStream();
-                FileOutputStream fos = new FileOutputStream("doip_test.pdf");
-                byte[] b = new byte[1024];
-                while ((in.read(b)) != -1) {
-                    fos.write(b);// 写入数据
-                }
+//                FileOutputStream fos = new FileOutputStream("doip_test.pdf");
+//                byte[] b = new byte[1024];
+//                while ((in.read(b)) != -1) {
+//                    fos.write(b);// 写入数据
+//                }
+                Util.printStream(in);
+                System.out.println("");
                 in.close();
-                fos.close();// 保存数据
+//                fos.close();// 保存数据
             }
         }
         DigitalObject dobj = new DigitalObject();
         Element el = new Element();
         el.id = "from_server";
-        el.in = Files.newInputStream(Paths.get("DO-IRP.pdf"));
+//        el.in = Files.newInputStream(Paths.get("DO-IRP.pdf"));
+        el.in = new ByteArrayInputStream("from server".getBytes());
         dobj.elements = new ArrayList<>();
         dobj.elements.add(el);
         Gson gson = new Gson();

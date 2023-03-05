@@ -1,9 +1,11 @@
 package xly.client;
 
 import com.google.gson.JsonObject;
+import xly.Util;
 import xly.doip.*;
 import xly.doip.client.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +26,8 @@ public class Client {
 
         Element el = new Element();
         el.id = "file";
-        el.in = Files.newInputStream(Paths.get("DO-IRP.pdf"));
+//        el.in = Files.newInputStream(Paths.get("DO-IRP.pdf"));
+        el.in = new ByteArrayInputStream("from client".getBytes());
         dobj.elements = new ArrayList<>();
         dobj.elements.add(el);
 
@@ -32,15 +35,16 @@ public class Client {
 
         DigitalObject result = client.create(dobj, authInfo, serviceInfo);
         for(Element result_el: result.elements){
-            System.out.println(result_el.id);
+            System.out.println("id="+result_el.id);
             InputStream result_el_in = result_el.in;
-            FileOutputStream fos = new FileOutputStream("doip_test_client.pdf");
-            byte[] b = new byte[1024];
-            while ((result_el_in.read(b)) != -1) {
-                fos.write(b);// 写入数据
-            }
+//            FileOutputStream fos = new FileOutputStream("doip_test_client.pdf");
+//            byte[] b = new byte[1024];
+//            while ((result_el_in.read(b)) != -1) {
+//                fos.write(b);// 写入数据
+//            }
+            Util.printStream(result_el_in);
             result_el_in.close();
-            fos.close();// 保存数据
+//            fos.close();// 保存数据
         }
 
 //        DigitalObject result = client.hello("", authInfo, serviceInfo);

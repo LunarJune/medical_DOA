@@ -1,9 +1,9 @@
 GHR——IRP
-LHS——负载均衡
-DOIP——改进（探讨UDP字节限制问题，参考DNS），ssl，吹一下并发设计，用户认证！
+LHS——LVS负载均衡（讲一下算法）
+DOIP——改进成UDP（探讨UDP字节限制问题，参考DNS），ssl，吹一下并发设计，用户认证！
 Client——设计医学DO，设计数据库
 
-
+实验——DOIP比起HTTP，UDP比起TCP，LVS实验
 
 我们作为中心机构
 每个医院各自为政
