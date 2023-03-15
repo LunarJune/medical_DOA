@@ -8,7 +8,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * A representation of search results from {@link DoipClient} search operations.
- * Provides either ids (an {code Iterable} or {@code Stream} of String objects) or
+ * Provides either ids (an {@code Iterable} or {@code Stream} of String objects) or
  * Digital Objects (an {@code Iterable} or {@code Stream} of DigitalObject objects).
  *
  * @param <T> either String for searchIds or DigitalObject for full search

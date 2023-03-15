@@ -46,6 +46,9 @@ public class DoipConnectionPool {
         }
     }
 
+    /**
+     * 尝试从池中获得一个连接
+     */
     @SuppressWarnings("resource")
     public DoipConnection get() {
         if (isShutdown) {
