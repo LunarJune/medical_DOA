@@ -11,9 +11,9 @@ import xly.doip.*;
 import xly.doip.client.transport.*;
 import xly.doip.util.GsonUtility;
 import xly.doip.util.InDoipMessageUtil;
-import xly.handle.hdllib.HandleException;
-import xly.handle.hdllib.HandleResolver;
-import xly.handle.hdllib.HandleValue;
+import net.handle.hdllib.HandleException;
+import net.handle.hdllib.HandleResolver;
+import net.handle.hdllib.HandleValue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,5 +1,7 @@
 package xly.test;
 
+import xly.Util;
+
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -16,16 +18,10 @@ public class SocketTCP_Server {
         ServerSocket serverSocket = new ServerSocket(port);
         Socket socket = serverSocket.accept();
         System.out.println("服务器端 socket = " + socket.getClass());
-        InputStream inputStream = socket.getInputStream();
-        byte[] buf = new byte[1024];
-        int readLine = 0;
-        while (true) {
-            while ((readLine = inputStream.read(buf)) != -1) {
-                System.out.println(new String(buf, 0, readLine));
-            }
-        }
-//        inputStream.close();
-//        socket.close();
-//        serverSocket.close();
+        InputStream in = socket.getInputStream();
+        Util.printStream(in);
+        in.close();
+        socket.close();
+        serverSocket.close();
     }
 }

@@ -17,12 +17,12 @@ public class SocketTCP_Client {
         String message;
         Scanner scanner = new Scanner(System.in);
         OutputStream outputStream = socket.getOutputStream();
-        while (true) {
+        for(int i = 0;i < 2;i++) {
             message = scanner.nextLine();
             outputStream.write(message.getBytes());
         }
-//        outputStream.close();
-//        socket.close();
+        outputStream.close();
+        socket.close();
 //        System.out.println("客户端退出...");
     }
 

@@ -23,7 +23,7 @@ public class LocalServer implements DoipProcessor {
 
     @Override
     public void process(DoipServerRequest req, DoipServerResponse resp) throws IOException {
-        System.out.println("hhhh");
+        System.out.println(req.getClientId());
         resp.commit();
         for (InDoipSegment segment : req.getInput()) {
             if (segment.isJson()) {

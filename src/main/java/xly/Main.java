@@ -3,14 +3,16 @@ package xly;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.google.gson.*;
 import xly.doip.*;
+import xly.doip.util.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String str = "{\"a\":\"b\nb\nb\"}";
-        Gson gson = new Gson();
-
+        int b = 1;
+        long c = (long) b;
 //        OutputStream out = new FileOutputStream("tmp.txt");
 //        OutDoipMessage outd = new OutDoipMessageImpl(out);
 //        JsonObject json = new JsonObject();

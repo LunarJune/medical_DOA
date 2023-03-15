@@ -6,7 +6,7 @@ import xly.doip.InDoipMessage;
 import xly.doip.InDoipSegment;
 import xly.doip.client.transport.DoipClientResponse;
 import xly.doip.util.InDoipMessageUtil;
-import xly.handle.hdllib.GsonUtility;
+import net.handle.hdllib.GsonUtility;
 
 import java.io.IOException;
 import java.io.InputStream;

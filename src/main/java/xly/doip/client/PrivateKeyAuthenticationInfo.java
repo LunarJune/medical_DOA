@@ -1,9 +1,9 @@
 package xly.doip.client;
 
 import com.google.gson.JsonObject;
-import xly.handle.hdllib.trust.JsonWebSignature;
-import xly.handle.hdllib.trust.JsonWebSignatureFactory;
-import xly.handle.hdllib.trust.TrustException;
+import net.handle.hdllib.trust.JsonWebSignature;
+import net.handle.hdllib.trust.JsonWebSignatureFactory;
+import net.handle.hdllib.trust.TrustException;
 import org.apache.commons.codec.binary.Hex;
 
 import java.security.PrivateKey;
