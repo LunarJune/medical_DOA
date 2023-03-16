@@ -2,7 +2,7 @@ package xly.doip.client.transport;
 
 import xly.doip.DoipRequestHeaders;
 import xly.doip.InDoipMessage;
-
+import java.net.Socket;
 import java.io.IOException;
 
 /**
@@ -49,6 +49,8 @@ public interface DoipConnection extends AutoCloseable {
      * @throws IOException
      */
     DoipExchange sendRequestToExchange(DoipRequestHeaders request) throws IOException;
+
+    Socket getSocket();
 
     @Override
     void close();

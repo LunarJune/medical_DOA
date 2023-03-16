@@ -5,7 +5,7 @@ client
     -- DoipConnectionImpl 实现了客户端与服务器的连接，具有发送请求和监听响应等功能
     -- ReleaseOnceDoipConnection 封装DoipConnectionImpl，用于判断连接是否已经释放
   -- TransportDoipClient 使用connect方法与服务器建立连接，将得到的socket封装在DoipConnectionImpl里，将DoipConnectionImpl放在map里
-  -- DoipConnectionPool 封装TransportDoipClient，用于获得连接，放在队列中，本类每个实例对应一个服务器
+  -- DoipConnectionPool 封装TransportDoipClient和连接信息(ip,port)，用于获得连接，放在队列中，本类每个实例对应一个服务器标识
 
   -- ServiceInfo 服务器信息
   -- ConnectionAndPool 封装一个DoipConnectionPool，初始化时从pool中获得一个连接（现有的或新建）

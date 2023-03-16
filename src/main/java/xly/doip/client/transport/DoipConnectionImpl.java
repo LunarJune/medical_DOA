@@ -263,6 +263,11 @@ public class DoipConnectionImpl implements DoipConnection {
     }
 
     @Override
+    public Socket getSocket() {
+        return socket;
+    }
+
+    @Override
     public void close() {
         closeWithoutWaiting();
         try {

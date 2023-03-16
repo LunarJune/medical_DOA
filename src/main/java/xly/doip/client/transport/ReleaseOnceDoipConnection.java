@@ -7,6 +7,7 @@ import xly.doip.client.transport.DoipConnection;
 import xly.doip.client.transport.DoipExchange;
 
 import java.io.IOException;
+import java.net.Socket;
 
 /**
  * An implementation of {@link DoipConnection} which is used by {@link DoipConnectionPool} and ensures correct
@@ -61,6 +62,11 @@ public class ReleaseOnceDoipConnection implements DoipConnection {
             throw new IllegalStateException("Attempt to use released connection");
         }
         return conn.sendRequestToExchange(request);
+    }
+
+    @Override
+    public Socket getSocket() {
+        return conn.getSocket();
     }
 
     @Override
