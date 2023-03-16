@@ -17,10 +17,6 @@ client
   -- QueryParams 封装pageNumber，pageSize和List<SortField>
   -- SearchResults
     -- DoipSearchResults 用于从DoipClientResponse中查询
-  -- AuthenticationInfo
-    -- PasswordAuthenticationInfo
-    -- PrivateKeyAuthenticationInfo
-    -- TokenAuthenticationInfo
   -- DoipClient 请求全程：
 用buildCreateOrUpdateMessageFrom获得要传给服务器的InDoipMessage
 用performOperation进行请求，获得响应DoipClientResponse
