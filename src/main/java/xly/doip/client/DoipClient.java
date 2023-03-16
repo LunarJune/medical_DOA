@@ -789,6 +789,9 @@ public class DoipClient implements AutoCloseable {
         if (response != null) try { response.close(); } catch (Exception ex) { }
     }
 
+    /**
+     * 从InDoipMessage中，解析出各个element，放入DigitalObject中
+     */
     private DigitalObject digitalObjectFromSegments(InDoipMessage input) throws IOException, DoipException {
         InDoipSegment firstSegment = InDoipMessageUtil.getFirstSegment(input);
         if (firstSegment == null) {
@@ -889,6 +892,9 @@ public class DoipClient implements AutoCloseable {
         return res;
     }
 
+    /**
+     * 封装ServiceInfo和DoipConnectionPool
+     */
     private static class ServiceInfoAndPool {
         public final ServiceInfo serviceInfo;
         public final DoipConnectionPool pool;

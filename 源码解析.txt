@@ -4,11 +4,11 @@ client
   -- DoipConnection
     -- DoipConnectionImpl 实现了客户端与服务器的连接，具有发送请求和监听响应等功能
     -- ReleaseOnceDoipConnection 封装DoipConnectionImpl，用于判断连接是否已经释放
-  -- TransportDoipClient 使用connect方法与服务器建立DoipConnectionImpl连接，将连接放在map里
-  -- DoipConnectionPool 封装TransportDoipClient，用于获得连接
+  -- TransportDoipClient 使用connect方法与服务器建立连接，将得到的socket封装在DoipConnectionImpl里，将DoipConnectionImpl放在map里
+  -- DoipConnectionPool 封装TransportDoipClient，用于获得连接，放在队列中，本类每个实例对应一个服务器
 
   -- ServiceInfo 服务器信息
-  -- ConnectionAndPool 封装一个DoipConnectionPool，初始化时从pool中获得一个连接
+  -- ConnectionAndPool 封装一个DoipConnectionPool，初始化时从pool中获得一个连接（现有的或新建）
   -- DelegatedCloseableInputStream 封装输入流，在关闭时额外运行一个提供的函数
   -- DigitalObject 数字对象
   -- Element 数字对象里的element
@@ -21,5 +21,15 @@ client
     -- PasswordAuthenticationInfo
     -- PrivateKeyAuthenticationInfo
     -- TokenAuthenticationInfo
+  -- DoipClient 请求全程：
+用buildCreateOrUpdateMessageFrom获得要传给服务器的InDoipMessage
+用performOperation进行请求，获得响应DoipClientResponse
+  用connectionAndPoolForOptions
+    调用getOrCreatePool，根据ServiceInfo里的ip地址，看看serviceHandleToPoolsMap里有没有
+    现成的pool，有则返回，没有则创建新的pool，放入map，并返回
+    然后将pool封装进ConnectionAndPool里，并返回
+  用performOperationWithConnection，使用之前获得的ConnectionAndPool里的连接进行请求
+从响应中解析出DO，返回
+
 server
   -- DoipServerRequest 服务器从客户端获得的请求，会进行首部检查等操作
