@@ -28,13 +28,13 @@ import org.slf4j.LoggerFactory;
 /**
  * A DOIP client for performing operations on objects.  The client can be used to perform arbitrary operations on object, and also provides
  * specific methods for the basic DOIP operations.
- *
+ * <p>
  * In general handle resolution will be used to find the service information for accessing the object: the
  * target id is resolved, handle values of type DOIPService are references to service ids which are resolved,
  * handle values of type DOIPServiceInfo have service connection information.
- *
+ * <p>
  * It is also possible to explicitly supply the service through which the operation is to be performed.
- *
+ * <p>
  * The user should call {@link #close()} to release all resources.
  */
 public class DoipClient implements AutoCloseable {
@@ -96,10 +96,10 @@ public class DoipClient implements AutoCloseable {
      * Performs an operation, looking up the target's service information by handle resolution.
      * No input (beyond attributes) is provided to the operation.
      *
-     * @param targetId the object on which to perform the operation
+     * @param targetId    the object on which to perform the operation
      * @param operationId the operation to perform
-     * @param authInfo the authentication to provide
-     * @param attributes the attributes to provide to the operation
+     * @param authInfo    the authentication to provide
+     * @param attributes  the attributes to provide to the operation
      * @return the response
      * @throws DoipException
      */
@@ -111,11 +111,11 @@ public class DoipClient implements AutoCloseable {
     /**
      * Performs an operation, looking up the target's service information by handle resolution.
      *
-     * @param targetId the object on which to perform the operation
+     * @param targetId    the object on which to perform the operation
      * @param operationId the operation to perform
-     * @param authInfo the authentication to provide
-     * @param attributes the attributes to provide to the operation
-     * @param input the input to the operation as a JsonElement
+     * @param authInfo    the authentication to provide
+     * @param attributes  the attributes to provide to the operation
+     * @param input       the input to the operation as a JsonElement
      * @return the response
      * @throws DoipException
      */
@@ -127,11 +127,11 @@ public class DoipClient implements AutoCloseable {
     /**
      * Performs an operation, looking up the target's service information by handle resolution.
      *
-     * @param targetId the object on which to perform the operation
+     * @param targetId    the object on which to perform the operation
      * @param operationId the operation to perform
-     * @param authInfo the authentication to provide
-     * @param attributes the attributes to provide to the operation
-     * @param input the input to the operation as an InDoipMessage
+     * @param authInfo    the authentication to provide
+     * @param attributes  the attributes to provide to the operation
+     * @param input       the input to the operation as an InDoipMessage
      * @return the response
      * @throws DoipException
      */
@@ -144,10 +144,10 @@ public class DoipClient implements AutoCloseable {
      * Performs an operation at a specified service.
      * No input (beyond attributes) is provided to the operation.
      *
-     * @param targetId the object on which to perform the operation
+     * @param targetId    the object on which to perform the operation
      * @param operationId the operation to perform
-     * @param authInfo the authentication to provide
-     * @param attributes the attributes to provide to the operation
+     * @param authInfo    the authentication to provide
+     * @param attributes  the attributes to provide to the operation
      * @param serviceInfo the service at which to perform the operation
      * @return the response
      * @throws DoipException
@@ -160,11 +160,11 @@ public class DoipClient implements AutoCloseable {
     /**
      * Performs an operation at a specified service.
      *
-     * @param targetId the object on which to perform the operation
+     * @param targetId    the object on which to perform the operation
      * @param operationId the operation to perform
-     * @param authInfo the authentication to provide
-     * @param attributes the attributes to provide to the operation
-     * @param input the input to the operation as a JsonElement
+     * @param authInfo    the authentication to provide
+     * @param attributes  the attributes to provide to the operation
+     * @param input       the input to the operation as a JsonElement
      * @param serviceInfo the service at which to perform the operation
      * @return the response
      * @throws DoipException
@@ -177,11 +177,11 @@ public class DoipClient implements AutoCloseable {
     /**
      * Performs an operation at a specified service.
      *
-     * @param targetId the object on which to perform the operation
+     * @param targetId    the object on which to perform the operation
      * @param operationId the operation to perform
-     * @param authInfo the authentication to provide
-     * @param attributes the attributes to provide to the operation
-     * @param input the input to the operation as an InDoipMessage
+     * @param authInfo    the authentication to provide
+     * @param attributes  the attributes to provide to the operation
+     * @param input       the input to the operation as an InDoipMessage
      * @param serviceInfo the service at which to perform the operation
      * @return the response
      * @throws DoipException
@@ -195,7 +195,7 @@ public class DoipClient implements AutoCloseable {
      * Performs an operation, looking up the target's service information by handle resolution.
      *
      * @param headers the content of the initial segment of the request
-     * @param input the input to the operation as an InDoipMessage
+     * @param input   the input to the operation as an InDoipMessage
      * @return the response
      * @throws DoipException
      */
@@ -206,8 +206,8 @@ public class DoipClient implements AutoCloseable {
     /**
      * Performs an operation at a specified service.
      *
-     * @param headers the content of the initial segment of the request
-     * @param input the input to the operation as an InDoipMessage
+     * @param headers     the content of the initial segment of the request
+     * @param input       the input to the operation as an InDoipMessage
      * @param serviceInfo the service at which to perform the operation
      * @return the response
      * @throws DoipException
@@ -285,8 +285,8 @@ public class DoipClient implements AutoCloseable {
     /**
      * Creates a digital object at a service.
      *
-     * @param dobj the digital object to create
-     * @param authInfo the authentication to provide
+     * @param dobj        the digital object to create
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return the created digital object
      * @throws DoipException
@@ -299,8 +299,8 @@ public class DoipClient implements AutoCloseable {
             throw new DoipException("Missing service id for create");
         }
         try (
-            InDoipMessage inMessage = buildCreateOrUpdateMessageFrom(dobj, false);
-            DoipClientResponse resp = performOperation(targetId, DoipConstants.OP_CREATE, authInfo, null, inMessage, serviceInfo);
+                InDoipMessage inMessage = buildCreateOrUpdateMessageFrom(dobj, false);
+                DoipClientResponse resp = performOperation(targetId, DoipConstants.OP_CREATE, authInfo, null, inMessage, serviceInfo);
         ) {
             if (resp.getStatus().equals(DoipConstants.STATUS_OK)) {
                 try (InDoipMessage in = resp.getOutput()) {
@@ -320,7 +320,7 @@ public class DoipClient implements AutoCloseable {
     /**
      * Updates a digital object.
      *
-     * @param dobj the digital object to update
+     * @param dobj     the digital object to update
      * @param authInfo the authentication to provide
      * @return the updated digital object
      * @throws DoipException
@@ -332,16 +332,16 @@ public class DoipClient implements AutoCloseable {
     /**
      * Updates a digital object at a specified service.
      *
-     * @param dobj the digital object to update
-     * @param authInfo the authentication to provide
+     * @param dobj        the digital object to update
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return the updated digital object
      * @throws DoipException
      */
     public DigitalObject update(DigitalObject dobj, AuthenticationInfo authInfo, ServiceInfo serviceInfo) throws DoipException {
         try (
-            InDoipMessage inMessage = buildCreateOrUpdateMessageFrom(dobj, true);
-            DoipClientResponse resp = performOperation(dobj.id, DoipConstants.OP_UPDATE, authInfo, null, inMessage, serviceInfo);
+                InDoipMessage inMessage = buildCreateOrUpdateMessageFrom(dobj, true);
+                DoipClientResponse resp = performOperation(dobj.id, DoipConstants.OP_UPDATE, authInfo, null, inMessage, serviceInfo);
         ) {
             if (resp.getStatus().equals(DoipConstants.STATUS_OK)) {
                 try (InDoipMessage in = resp.getOutput()) {
@@ -392,8 +392,8 @@ public class DoipClient implements AutoCloseable {
     /**
      * Retrieves a digital object from a specified service.
      *
-     * @param targetId the id of the object to retrieve
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the object to retrieve
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return the digital object
      * @throws DoipException
@@ -405,9 +405,9 @@ public class DoipClient implements AutoCloseable {
     /**
      * Retrieves a digital object, possibly including all element data.
      *
-     * @param targetId the id of the object to retrieve
+     * @param targetId           the id of the object to retrieve
      * @param includeElementData if true, include data for all elements
-     * @param authInfo the authentication to provide
+     * @param authInfo           the authentication to provide
      * @return the digital object
      * @throws DoipException
      */
@@ -418,10 +418,10 @@ public class DoipClient implements AutoCloseable {
     /**
      * Retrieves a digital object from a specified service, possibly including all element data.
      *
-     * @param targetId the id of the object to retrieve
+     * @param targetId           the id of the object to retrieve
      * @param includeElementData if true, include data for all elements
-     * @param authInfo the authentication to provide
-     * @param serviceInfo the service at which to perform the operation
+     * @param authInfo           the authentication to provide
+     * @param serviceInfo        the service at which to perform the operation
      * @return the digital object
      * @throws DoipException
      */
@@ -462,8 +462,8 @@ public class DoipClient implements AutoCloseable {
     /**
      * Deletes a digital object from a specified service.
      *
-     * @param targetId the id of the object to delete
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the object to delete
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @throws DoipException
      */
@@ -497,8 +497,8 @@ public class DoipClient implements AutoCloseable {
     /**
      * Lists operations available for a digital object at a specified service.
      *
-     * @param targetId the id of the digital object
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the digital object
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return the list of available operation ids
      * @throws DoipException
@@ -512,7 +512,8 @@ public class DoipClient implements AutoCloseable {
                     if (firstSegment == null) {
                         throw new DoipException("Missing first segment in response");
                     }
-                    List<String> results = GsonUtility.getGson().fromJson(firstSegment.getJson(), new TypeToken<List<String>>(){}.getType());
+                    List<String> results = GsonUtility.getGson().fromJson(firstSegment.getJson(), new TypeToken<List<String>>() {
+                    }.getType());
                     return results;
                 }
             } else {
@@ -546,8 +547,8 @@ public class DoipClient implements AutoCloseable {
      * Search for digital objects, returning the ids of the results.
      *
      * @param targetId the id of the operation target (generally a DOIP service id)
-     * @param query the query
-     * @param params the query parameters
+     * @param query    the query
+     * @param params   the query parameters
      * @param authInfo the authentication to provide
      * @return the search results as ids
      * @throws DoipException
@@ -559,10 +560,10 @@ public class DoipClient implements AutoCloseable {
     /**
      * Search for digital objects, returning the ids of the results.
      *
-     * @param targetId the id of the operation target (generally a DOIP service id)
-     * @param query the query
-     * @param params the query parameters
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the operation target (generally a DOIP service id)
+     * @param query       the query
+     * @param params      the query parameters
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return the search results as ids
      * @throws DoipException
@@ -575,8 +576,8 @@ public class DoipClient implements AutoCloseable {
      * Search for digital objects, returning the full results as digital objects.
      *
      * @param targetId the id of the operation target (generally a DOIP service id)
-     * @param query the query
-     * @param params the query parameters
+     * @param query    the query
+     * @param params   the query parameters
      * @param authInfo the authentication to provide
      * @return the search results as digital objects
      * @throws DoipException
@@ -588,10 +589,10 @@ public class DoipClient implements AutoCloseable {
     /**
      * Search for digital objects, returning the full results as digital objects.
      *
-     * @param targetId the id of the operation target (generally a DOIP service id)
-     * @param query the query
-     * @param params the query parameters
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the operation target (generally a DOIP service id)
+     * @param query       the query
+     * @param params      the query parameters
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return the search results as digital objects
      * @throws DoipException
@@ -638,8 +639,8 @@ public class DoipClient implements AutoCloseable {
     private static String sortFieldsToString(List<SortField> sortFields) {
         if (sortFields != null && !sortFields.isEmpty()) {
             List<String> sortFieldsForTransport = new ArrayList<>(sortFields.size());
-            for(SortField sortField : sortFields) {
-                if(sortField.isReverse()) sortFieldsForTransport.add(sortField.getName() + " DESC");
+            for (SortField sortField : sortFields) {
+                if (sortField.isReverse()) sortFieldsForTransport.add(sortField.getName() + " DESC");
                 else sortFieldsForTransport.add(sortField.getName());
             }
             if (!sortFieldsForTransport.isEmpty()) {
@@ -664,8 +665,8 @@ public class DoipClient implements AutoCloseable {
     /**
      * Performs the "hello" operation at a specified service.
      *
-     * @param targetId the id of the operation target (generally a DOIP service id)
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the operation target (generally a DOIP service id)
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return the result of the hello operation as a service info digital object
      * @throws DoipException
@@ -688,12 +689,26 @@ public class DoipClient implements AutoCloseable {
         }
     }
 
+    public DoipClientResponse getLHS(String targetId, AuthenticationInfo authInfo, ServiceInfo serviceInfo) throws DoipException {
+        try (DoipClientResponse response = performOperation(targetId, DoipConstants.OP_GETLHS, authInfo, null, (JsonElement) null, serviceInfo)) {
+            if (response.getStatus().equals(DoipConstants.STATUS_OK)) {
+                return response;
+            } else {
+                throw doipExceptionFromDoipResponse(response);
+            }
+        } catch (DoipException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DoipException(e);
+        }
+    }
+
     /**
      * Retrieves an element from a digital object.
      *
-     * @param targetId the id of the digital object
+     * @param targetId  the id of the digital object
      * @param elementId the id of the element
-     * @param authInfo the authentication to provide
+     * @param authInfo  the authentication to provide
      * @return an input stream with the bytes of the element
      * @throws DoipException
      */
@@ -704,9 +719,9 @@ public class DoipClient implements AutoCloseable {
     /**
      * Retrieves an element from a digital object at a specified service.
      *
-     * @param targetId the id of the digital object
-     * @param elementId the id of the element
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the digital object
+     * @param elementId   the id of the element
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return an input stream with the bytes of the element
      * @throws DoipException
@@ -744,11 +759,11 @@ public class DoipClient implements AutoCloseable {
      * If only start is null, end indicates how many bytes to return from the end of the element. For example, if start is null and end is 500, the
      * last 500 bytes of the element are returned.
      *
-     * @param targetId the id of the digital object
-     * @param elementId the id of the element
-     * @param start the start byte of the desired range, or null (indicates that the number of bytes given by end should be retrieved from the end of the element)
-     * @param end the end byte of the desired range, or null (indicates the range should extend to the end of the element)
-     * @param authInfo the authentication to provide
+     * @param targetId    the id of the digital object
+     * @param elementId   the id of the element
+     * @param start       the start byte of the desired range, or null (indicates that the number of bytes given by end should be retrieved from the end of the element)
+     * @param end         the end byte of the desired range, or null (indicates the range should extend to the end of the element)
+     * @param authInfo    the authentication to provide
      * @param serviceInfo the service at which to perform the operation
      * @return an input stream with the bytes of the element from start to end inclusive
      * @throws DoipException
@@ -786,7 +801,10 @@ public class DoipClient implements AutoCloseable {
     }
 
     private static void closeQuietly(DoipClientResponse response) {
-        if (response != null) try { response.close(); } catch (Exception ex) { }
+        if (response != null) try {
+            response.close();
+        } catch (Exception ex) {
+        }
     }
 
     /**
@@ -915,7 +933,7 @@ public class DoipClient implements AutoCloseable {
     }
 
     private ServiceInfo getServiceInfoFor(String handle, int hopCount) throws HandleException {
-        HandleValue[] values = resolver.resolveHandle(handle, new String[] { DOIP_SERVICE, TYPE_DOIP_SERVICE, DOIP_SERVICE_INFO, TYPE_DOIP_SERVICE_INFO }, null);
+        HandleValue[] values = resolver.resolveHandle(handle, new String[]{DOIP_SERVICE, TYPE_DOIP_SERVICE, DOIP_SERVICE_INFO, TYPE_DOIP_SERVICE_INFO}, null);
         for (HandleValue value : values) {
             String type = value.getTypeAsString();
             if (DOIP_SERVICE_INFO.equals(type) || TYPE_DOIP_SERVICE_INFO.equals(type)) {
@@ -929,7 +947,7 @@ public class DoipClient implements AutoCloseable {
                 if (hopCount >= MAX_HOP_COUNT) {
                     return null;
                 }
-                return getServiceInfoFor(doipServiceHandle, hopCount+1);
+                return getServiceInfoFor(doipServiceHandle, hopCount + 1);
             }
         }
         return null;

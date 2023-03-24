@@ -8,14 +8,21 @@ import xly.doip.DoipRequestHeaders;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.concurrent.CountDownLatch;
 
 public class UDPClient {
     static int clientCnt = 10;
+    static volatile CountDownLatch cdl;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        long millis1 = System.currentTimeMillis();
+        cdl = new CountDownLatch(clientCnt);
         for (int i = 0; i < clientCnt; i++) {
             new UDPClientThread().start();
         }
+        cdl.await();
+        long millis2 = System.currentTimeMillis();
+        System.out.println(millis2 - millis1);//经过的毫秒数
     }
 
     static class UDPClientThread extends Thread {
@@ -41,6 +48,7 @@ public class UDPClient {
                 JsonObject json = JsonParser.parseString(response).getAsJsonObject();
                 System.out.println(json);
                 clientSocket.close();
+                cdl.countDown();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

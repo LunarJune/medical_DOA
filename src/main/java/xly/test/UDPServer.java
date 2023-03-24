@@ -22,7 +22,7 @@ public class UDPServer {
                 InetAddress IPAddress = receivePacket.getAddress();
                 int port = receivePacket.getPort();
                 JsonObject json = JsonParser.parseString(message).getAsJsonObject();
-                System.out.println(json);
+//                System.out.println(json);
                 DoipResponseHeaders header = new DoipResponseHeaders();
                 header.status = "Status.001";
                 JsonObject output = new JsonObject();
