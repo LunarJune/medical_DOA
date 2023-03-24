@@ -13,7 +13,7 @@ import java.util.*;
 public class Test_Client1 {
     public static void main(String[] args) throws Exception {
         String ip = "127.0.0.1";
-        int port = 8888;
+        int port = 1234;
         try (Client client = new Client(ip, port)) {
             client.beginMonitorRead();
             String message;

@@ -13,17 +13,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class NIO_Server {
+public class NioServer {
 
-    private static final int BUFFER_SIZE = 5;
+    private static final int BUFFER_SIZE = 100;
     private static final int TIMEOUT = 3000;
     private static Map<SocketChannel, String> map = new HashMap<>();
 
-    public static void main(String[] args) throws IOException,InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         // 创建ServerSocketChannel并绑定端口
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-        serverSocketChannel.socket().bind(new InetSocketAddress(8888));
+        serverSocketChannel.socket().bind(new InetSocketAddress(1234));
         serverSocketChannel.configureBlocking(false);
 
         // 创建Selector并将ServerSocketChannel注册到Selector上
@@ -42,7 +42,7 @@ public class NIO_Server {
                     SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
                     socketChannel.configureBlocking(false);
                     socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(BUFFER_SIZE));
-                    System.out.println("客户端连接成功：" + socketChannel.getRemoteAddress());
+//                    System.out.println("客户端连接成功：" + socketChannel.getRemoteAddress());
                 } else if (key.isReadable()) {
                     // 读取客户端发送的数据
                     SocketChannel socketChannel = (SocketChannel) key.channel();
@@ -63,28 +63,26 @@ public class NIO_Server {
                                 bytesRead = socketChannel.read(buffer);
                             } else {
                                 map.put(socketChannel, req);
-                                System.out.println("收到请求 " + req);
+//                                System.out.println("收到请求 " + req);
                                 key.interestOps(SelectionKey.OP_WRITE);
                                 break;
                             }
                         }
                     } catch (SocketException e) {
+//                        System.out.println("remove!");
                         socketChannel.close();
                         key.cancel();
                     }
                 } else if (key.isWritable()) {
+                    double num = 1;
+                    for (int i = 0; i < ThreadPoolServer.calTimes * 10000; i++) num += Math.random();
                     SocketChannel socketChannel = (SocketChannel) key.channel();
                     String req = map.get(socketChannel);
-                    System.out.println(req + "发送数据");
-                    ByteBuffer buffer = ByteBuffer.wrap(("response" + req).getBytes());
-                    if (req.contains("client1")) Thread.sleep(3000);
+//                    System.out.println(req + "发送数据");
+                    ByteBuffer buffer = ByteBuffer.wrap(("hello" + num).getBytes());
                     socketChannel.write(buffer);
-                    if (req.contains("###")) {
-                        socketChannel.close();
-                        key.cancel();
-                    } else {
-                        key.interestOps(SelectionKey.OP_READ);
-                    }
+                    socketChannel.close();
+                    key.cancel();
                 }
                 keyIterator.remove();
             }
