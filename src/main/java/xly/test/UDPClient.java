@@ -1,28 +1,48 @@
 package xly.test;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.eclipse.jetty.util.IO;
+import xly.doip.DoipRequestHeaders;
+
+import java.io.IOException;
 import java.net.*;
 
 public class UDPClient {
+    static int clientCnt = 10;
+
     public static void main(String[] args) {
-        DatagramSocket clientSocket = null;
-        try {
-            clientSocket = new DatagramSocket();
-            InetAddress IPAddress = InetAddress.getByName("localhost");
-            String message = "Hello, server!";
-            byte[] sendData = message.getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
-            clientSocket.send(sendPacket);
-            byte[] receiveData = new byte[1024];
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            clientSocket.receive(receivePacket);
-            int length = receivePacket.getLength();
-            String response = new String(receiveData, 0, length);
-            System.out.println("Server response: " + response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            if (clientSocket != null) {
+        for (int i = 0; i < clientCnt; i++) {
+            new UDPClientThread().start();
+        }
+    }
+
+    static class UDPClientThread extends Thread {
+        @Override
+        public void run() {
+            try {
+                DatagramSocket clientSocket = new DatagramSocket();
+                InetAddress IPAddress = InetAddress.getByName("localhost");
+                DoipRequestHeaders header = new DoipRequestHeaders();
+                header.clientId = "client";
+                header.operationId = "Op.GetLHS";
+                header.targetId = "test/1.2.66";
+                Gson gson = new Gson();
+                String message = gson.toJson(header);
+                byte[] sendData = message.getBytes();
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+                clientSocket.send(sendPacket);
+                byte[] receiveData = new byte[1024];
+                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                clientSocket.receive(receivePacket);
+                int length = receivePacket.getLength();
+                String response = new String(receiveData, 0, length);
+                JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+                System.out.println(json);
                 clientSocket.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }

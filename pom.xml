@@ -407,6 +407,11 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/servletContainer/taglibs-standard-spec-1.2.5.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.18.1</version>
+        </dependency>
     </dependencies>
 
 </project>
